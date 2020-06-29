@@ -1,0 +1,47 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: 'Merriweather Sans', sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+}
+
+.header .header__title {
+  font-size: 36px;
+  text-align: center;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper .game {
+  border: 0.5px solid #000;
+}
+
+.wrapper .game__row {
+  display: flex;
+}
+
+.wrapper .game__row .game__cell {
+  display: block;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: #c5c4c4;
+  border: 1px solid #000;
+}
+/*# sourceMappingURL=style.css.map */
