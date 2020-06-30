@@ -37,7 +37,21 @@ body {
         background: rgb(197, 196, 196);
         border: 1px solid #000;
       }
+      .flag {
+        &::after {
+          content: url(../img/flag-solid.svg);
+        }
+      }
+      .opened {
+        background: rgb(245, 241, 241);
+      }
     }
   }
+}
 
+.game-over {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, .2);
 }
