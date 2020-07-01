@@ -54,7 +54,25 @@ body {
 
 .game-over {
   display: none;
-  height: 100vh;
+  height: 80vh;
   width: 100vw;
   background: rgba(0, 0, 0, .2);
+  color: random($limit: 5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  &__title {
+    font-size: 100px;
+    font-style: bold;
+    text-align: center;
+  }
+  button {
+    border: none;
+    background: transparent;
+    font-size: 100px;
+    font-style: bold;
+    padding: 20px;
+  }
 }
+
