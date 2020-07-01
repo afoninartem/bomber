@@ -62,10 +62,11 @@ body {
   font-size: 90px;
   text-align: center;
   font-family: 'Merriweather Sans', sans-serif;
+  color: transparent;
 }
 
-.wrapper .game__row .flag::after {
-  content: url(../img/flag-solid.svg);
+.wrapper .game__row .flag {
+  background: #c5c4c4 url(../img/flag-solid.svg);
 }
 
 .wrapper .game__row .opened {
@@ -74,13 +75,9 @@ body {
 
 .game-over {
   display: none;
-  height: 80vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background: rgba(0, 0, 0, 0.2);
-  color: 2;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -97,6 +94,7 @@ body {
   font-size: 100px;
   font-style: bold;
   text-align: center;
+  padding: 20px;
 }
 
 .game-over button {
