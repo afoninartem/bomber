@@ -36,6 +36,9 @@ body {
         height: 100px;
         background: rgb(197, 196, 196);
         border: 1px solid #000;
+        font-size: 90px;
+        text-align: center;
+        font-family: 'Merriweather Sans', sans-serif;
       }
       .flag {
         &::after {

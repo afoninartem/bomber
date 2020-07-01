@@ -33,36 +33,30 @@ for (let i = 0; i < bombs; i += 1) {
 }
 
 //tips generation
-for (let i = 0; i < cells.length; i += 1) {
-  let tip = 0;
-  if (!cells[i].classList.contains('bomb')) {
-    if (cells[i - 1] !== undefined) {
-      if (cells[i - 1].classList.contains('bomb')) tip += 1;
-    }
-    if (cells[i + 1] !== undefined) {
-      if (cells[i + 1].classList.contains('bomb')) tip += 1;
-    }
-    if (cells[i - 8] !== undefined) {
-      if (cells[i - 8].classList.contains('bomb')) tip += 1;
-    }
-    if (cells[i + 8] !== undefined) {
-      if (cells[i + 8].classList.contains('bomb')) tip += 1;
-    }
-    if (cells[i - 7] !== undefined) {
-      if (cells[i - 7].classList.contains('bomb')) tip += 1;
-    }
-    if (cells[i + 7] !== undefined) {
-      if (cells[i + 7].classList.contains('bomb')) tip += 1;
-    }
-    if (cells[i - 9] !== undefined) {
-      if (cells[i - 9].classList.contains('bomb')) tip += 1;
-    }
-    if (cells[i + 9] !== undefined) {
-      if (cells[i + 9].classList.contains('bomb')) tip += 1;
+
+const rows = document.querySelectorAll('.game__row');
+for (let i = 0; i < rows.length; i += 1) {
+  let rowCells = rows[i].children;
+  for (let j = 0; j < rowCells.length; j += 1) {
+    if (!rowCells[j].classList.contains('bomb')) {
+      let tip = 0;
+      if (rowCells[j].previousSibling !== null && rowCells[j].previousSibling.classList.contains('bomb')) tip++;
+      if (rowCells[j].nextSibling !== null && rowCells[j].nextSibling.classList.contains('bomb')) tip++;
+      if (i > 0) {
+        if (rowCells[j].parentElement.previousSibling.children[j] !== undefined && rowCells[j].parentElement.previousSibling.children[j].classList.contains('bomb')) tip++;
+        if (rowCells[j].parentElement.previousSibling.children[j - 1] !== undefined && rowCells[j].parentElement.previousSibling.children[j - 1].classList.contains('bomb')) tip++;
+        if (rowCells[j].parentElement.previousSibling.children[j + 1] !== undefined && rowCells[j].parentElement.previousSibling.children[j + 1].classList.contains('bomb')) tip++;
+      }
+      if (rowCells[j].parentElement.nextSibling !== null) {
+        if (rowCells[j].parentElement.nextSibling.children[j] !== undefined && rowCells[j].parentElement.nextSibling.children[j].classList.contains('bomb')) tip++;
+        if (rowCells[j].parentElement.nextSibling.children[j - 1] !== undefined && rowCells[j].parentElement.nextSibling.children[j - 1].classList.contains('bomb')) tip++;
+        if (rowCells[j].parentElement.nextSibling.children[j + 1] !== undefined && rowCells[j].parentElement.nextSibling.children[j + 1].classList.contains('bomb')) tip++;
+      }
+      rowCells[j].textContent = tip;
     }
   }
-  if (tip > 0) cells[i].textContent = tip;
 }
+
 
 //demining 
 cells.forEach(cell => {
