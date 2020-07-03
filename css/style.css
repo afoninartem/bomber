@@ -73,6 +73,10 @@ body {
   background: #f5f1f1;
 }
 
+.wrapper .game__row .bombed {
+  background: red url(../img/bomb-solid.svg);
+}
+
 .game-over {
   display: none;
   height: 100%;

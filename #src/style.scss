@@ -47,6 +47,10 @@ body {
       .opened {
         background: rgb(245, 241, 241);
       }
+      .bombed {
+        background: rgb(255, 0, 0) url(../img/bomb-solid.svg);
+      }
+
     }
   }
 }
