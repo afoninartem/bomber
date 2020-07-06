@@ -33,16 +33,7 @@ for (let i = 0; i < bombs; i += 1) {
   let bombed = Math.floor(Math.random() * cells.length);
   cells[bombed].classList.add('bomb');
 }
-//index of element 
-// const getIndex = (x) => {
-//   let index = 0;
-//   temp = x;
-//   while (temp !== x.parentElement.firstElementChild) {
-//     temp = temp.previousSibling;
-//     index += 1;
-//   }
-//   return index;
-// }
+
 //surround cells
 const surroundCells = cell => {
   let x = +cell.dataset.col;
@@ -82,9 +73,74 @@ const coloring = (cell) => {
       break;
   }
 }
+//counting bombs near the cell
+const bombsAround = cell => {
+  let cellsAround = surroundCells(cell);
+  let bombsAround = cellsAround.filter(el => el.classList.contains('bomb')).length;
+  return bombsAround;
+}
 
 //tips generation
 cells.forEach(cell => {
+  let tip = bombsAround(cell);
+  if (tip > 0 && !cell.classList.contains('bomb')) cell.textContent = tip;
+  else if (!cell.classList.contains('bomb')) cell.classList.add('empty');
+});
+
+//for imitation of clicks to open the whole empty area
+const clickCell = x => {
+  if (!x.classList.contains('opened') && !x.classList.contains('flag')) {
+    x.click();
+  }
+}
+
+//empty cells expansion 
+const expansion = cell => {
+  const emptySpace = surroundCells(cell);
+  emptySpace.forEach(el => {
+    clickCell(el);
+    coloring(el);
+  })
+  
+}
+
+//first click 
+game.addEventListener(click);
+
+//demining 
+cells.forEach(cell => {
+  cell.addEventListener('click', function () {
+    if (!event.target.classList.contains('flag') && !event.target.classList.contains('bomb')) {
+      event.target.classList.add('opened');
+      //coloring 
+      coloring(event.target);
+    }
+    if (!event.target.classList.contains('flag') && event.target.classList.contains('bomb')) {
+      const bombCells = document.querySelectorAll('.bomb');
+      bombCells.forEach(cell => cell.classList.add('bombed'));
+    }
+    if (!event.target.classList.contains('flag') && event.target.classList.contains('empty')) {
+      expansion(event.target);
+    }
+  });
+});
+
+
+//first tryouts
+
+//index of element 
+// const getIndex = (x) => {
+//   let index = 0;
+//   temp = x;
+//   while (temp !== x.parentElement.firstElementChild) {
+//     temp = temp.previousSibling;
+//     index += 1;
+//   }
+//   return index;
+// }
+
+//tips generation
+ //in the loop:
   // let index = getIndex(cell);
   // if (!cell.classList.contains('bomb')) {
   //   let tip = 0;
@@ -103,38 +159,3 @@ cells.forEach(cell => {
   //   if (tip > 0) cell.textContent = tip;
   //   else cell.classList.add('empty');
   // }
-  let cellsAround = surroundCells(cell);
-  let bombsAround = cellsAround.filter(el => el.classList.contains('bomb')).length;
-  if (bombsAround > 0) cell.textContent = bombsAround;
-  else if (!cell.classList.contains('bomb')) cell.classList.add('empty');
-});
-
-
-//empty cells
-let emptyCells = document.querySelectorAll('.empty');
-emptyCells.forEach(cell => {
-  cell.addEventListener('click', function(){
-    let targetArea = surroundCells(event.target);
-    targetArea.forEach(c => {
-      coloring(c);
-      c.classList.add('opened');
-      // if (!c.classList.contains('bomb')) c.classList.add('opened'); //некорректно, рядом с пустой всегда нет бомб
-      if (c.classList.contains('empty')) surroundCells(c);
-    })
-  })
-})
-
-//demining 
-cells.forEach(cell => {
-  cell.addEventListener('click', function () {
-    if (!event.target.classList.contains('flag') && !event.target.classList.contains('bomb')) {
-      event.target.classList.add('opened');
-      //coloring 
-      coloring(event.target);
-    }
-    if (!event.target.classList.contains('flag') && event.target.classList.contains('bomb')) {
-      const bombCells = document.querySelectorAll('.bomb');
-      bombCells.forEach(cell => cell.classList.add('bombed'));
-    }
-  });
-});
