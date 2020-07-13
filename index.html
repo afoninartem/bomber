@@ -13,8 +13,29 @@
 <body>
     <div class="header">
         <h1 class="header__title">Sapper</h1>
+        <div class="header__timer"></div>
     </div>
     <div class="wrapper">
+        <div class="settings">
+            <div class="area-size">
+                <h2 class="area-size__title">
+                    Field size:
+                </h2>
+                <input type="number" name="" id="areaSize" required>
+                <!-- <button onclick="sizeSubmit()" type="submit"></button> -->
+            </div>
+            <div class="difficulty">
+                <h2 class="difficulty__title">
+                    Difficulty:
+                </h2>
+                <select class="difficulty__select" name="" id="difficultySelect" required>
+                    <option value="easy">Easy</option>
+                    <option value="normal">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <button onclick="start()" type="button">Start!</button>
+        </div>
         <div class="game">
         </div>
     </div>
