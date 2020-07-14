@@ -124,40 +124,41 @@ const start = () => {
     const emptySpace = surroundCells(cell);
     emptySpace.forEach(el => {
       clickCell(el);
-      coloring(el);
+      if (!el.classList.contains('flag')) coloring(el);
     })
   }
 
-  //first click 
+  //first click delete bomb?
 
   //timer
   const timer = document.querySelector('.header__timer');
-  let minutes = 0;
-  let seconds = 0;
-  if (minutes < 10) minutes = '0' + minutes;
-  if (seconds < 10) seconds = '0' + seconds;
-  timer.textContent = `${minutes}:${seconds}`;
-  const timerInit = () => {
-    setInterval(seconds++, 1000);
-    setInterval(minutes++, 60000);
-    if (seconds === 60) seconds = 0;
-    timer.textContent = `${minutes}:${seconds}`;
-  }
-  timerInit();
+  let time = 0;
+  setInterval(() => {
+    let min = Math.floor(time / 60);
+    let sec = Math.floor(time % 60);
+    if (sec < 10) sec = '0' + sec;
+    if (min < 10) min = '0' + min;
+    timer.textContent = `${min}:${sec}`
+    if (sec === 59) sec = 0;
+    time++;
+  }, 1000);
 
   //demining 
   cells.forEach(cell => {
     cell.addEventListener('click', function () {
+      //opening tip cells
       if (!event.target.classList.contains('flag') && !event.target.classList.contains('bomb')) {
         event.target.classList.add('opened');
-        //coloring 
+        //coloring
         coloring(event.target);
       }
+      //opening bomb cells
       if (!event.target.classList.contains('flag') && event.target.classList.contains('bomb')) {
         const bombCells = document.querySelectorAll('.bomb');
         bombCells.forEach(cell => cell.classList.add('bombed'));
         gameIsGoingOn = false;
       }
+      //opening empty cells
       if (!event.target.classList.contains('flag') && event.target.classList.contains('empty')) {
         expansion(event.target);
       }

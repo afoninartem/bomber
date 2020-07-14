@@ -32,6 +32,7 @@ body {
 }
 
 .header .header__timer {
+  font-family: 'Orbitron', sans-serif;
   font-size: 36px;
   display: none;
 }
