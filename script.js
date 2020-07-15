@@ -53,7 +53,7 @@ const start = () => {
   cells.forEach(cell => {
     cell.addEventListener('contextmenu', function () {
       if (!event.target.classList.contains('opened')) event.target.classList.toggle('flag');
-      console.log(cell);
+      // console.log(cell);
     });
   });
 
@@ -133,7 +133,7 @@ const start = () => {
   //timer
   const timer = document.querySelector('.header__timer');
   let time = 0;
-  setInterval(() => {
+  const timerInit = setInterval(() => {
     let min = Math.floor(time / 60);
     let sec = Math.floor(time % 60);
     if (sec < 10) sec = '0' + sec;
@@ -156,7 +156,15 @@ const start = () => {
       if (!event.target.classList.contains('flag') && event.target.classList.contains('bomb')) {
         const bombCells = document.querySelectorAll('.bomb');
         bombCells.forEach(cell => cell.classList.add('bombed'));
-        gameIsGoingOn = false;
+        //game over
+        clearInterval(timerInit);
+        setTimeout(() => {
+          document.querySelector('.game-over').style.display = 'flex';
+          document.querySelector('.game').style.opacity = '0.5';
+        }, 1000);
+        document.querySelector('#onceMore').addEventListener('click', () => {
+          window.location.reload();
+        });
       }
       //opening empty cells
       if (!event.target.classList.contains('flag') && event.target.classList.contains('empty')) {
@@ -164,6 +172,29 @@ const start = () => {
       }
     });
   });
+
+  //victory
+  cells.forEach(cell => {
+    cell.addEventListener('click', function () {
+      const bombCells = document.querySelectorAll('.bomb');
+      const safeCells = Array.from(cells).filter(el => !el.classList.contains('bomb'));
+      let term1 = Array.from(bombCells).every(el => el.classList.contains('flag'));
+      let term2 = Array.from(safeCells).every(el => el.classList.contains('opened'));
+      if (term1 === true && term2 === true) {
+        clearInterval(timerInit);
+        document.querySelector('.victory').style.display = 'flex';
+        document.querySelector('.game').style.opacity = '0.5';
+        document.querySelector('#submitResult').addEventListener('click', () => {
+          const winnerName = document.querySelector('input').value;
+          const winnerTime = timer.textContent;
+          const winnerDiff = userDiff;
+          console.log(winnerName, winnerTime, winnerDiff);
+        })
+      }
+    });
+  });
+
+
 
 }
 //first tryouts
