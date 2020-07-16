@@ -1,26 +1,26 @@
 //game field generation
 const start = () => {
-
-  const gameHeight = document.querySelector('#areaSize').value;
-  const gameWidth = document.querySelector('#areaSize').value;
-  // console.log(`gameHeight = ${gameHeight}
-  // gameWidth = ${gameWidth}`)
+  const gameSize = document.querySelector('#areaSize').value;
   const game = document.querySelector('.game');
-  for (let i = 0; i < gameHeight; i += 1) {
+  const cellSide = Math.floor(800 / gameSize);
+  for (let i = 0; i < gameSize; i += 1) {
     const gameRow = document.createElement('div');
     gameRow.classList.add('game__row');
     game.appendChild(gameRow);
-    for (let j = 0; j < gameWidth; j += 1) {
+    for (let j = 0; j < gameSize; j += 1) {
       const gameCell = document.createElement('div');
       gameCell.classList.add('game__cell');
       gameCell.dataset.row = i;
       gameCell.dataset.col = j;
+      gameCell.style.width = `${cellSide}px`;
+      gameCell.style.height = `${cellSide}px`;
+      gameCell.style.fontSize = `${cellSide}px`;
       gameRow.appendChild(gameCell);
     }
   }
 
   const cells = document.querySelectorAll('.game__cell');
-
+  
   //difficulty
   const difficulty = {
     easy: 8,
@@ -32,7 +32,7 @@ const start = () => {
   // console.log(difficulty[userDiff])
 
   //bombs generation
-  const bombs = Math.floor(gameHeight * gameWidth / difficulty[userDiff]);
+  const bombs = Math.floor(gameSize ** 2 / difficulty[userDiff]);
   // console.log(bombs)
   for (let i = 0; i < bombs; i += 1) {
     let bombed = Math.floor(Math.random() * cells.length);
@@ -133,7 +133,7 @@ const start = () => {
   //timer
   const timer = document.querySelector('.header__timer');
   let time = 0;
-  const timerInit = setInterval(() => {
+  const tickTack = () => {
     let min = Math.floor(time / 60);
     let sec = Math.floor(time % 60);
     if (sec < 10) sec = '0' + sec;
@@ -141,7 +141,9 @@ const start = () => {
     timer.textContent = `${min}:${sec}`
     if (sec === 59) sec = 0;
     time++;
-  }, 1000);
+  }
+  tickTack();
+  const timerInit = setInterval(tickTack, 1000);
 
   //demining 
   cells.forEach(cell => {
@@ -158,10 +160,8 @@ const start = () => {
         bombCells.forEach(cell => cell.classList.add('bombed'));
         //game over
         clearInterval(timerInit);
-        setTimeout(() => {
-          document.querySelector('.game-over').style.display = 'flex';
-          document.querySelector('.game').style.opacity = '0.5';
-        }, 1000);
+        document.querySelector('.game-over').style.display = 'flex';
+        document.querySelector('.game').style.opacity = '0.5';
         document.querySelector('#onceMore').addEventListener('click', () => {
           window.location.reload();
         });

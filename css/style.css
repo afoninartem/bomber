@@ -115,11 +115,8 @@ body {
 .wrapper .game__row .game__cell {
   display: block;
   position: relative;
-  height: 1em;
-  width: 1em;
   background: #c5c4c4;
   border: 1px solid #000;
-  font-size: 90px;
   text-align: center;
   font-family: "Merriweather Sans", sans-serif;
   color: transparent;
