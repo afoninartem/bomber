@@ -163,13 +163,13 @@ const start = () => {
         document.querySelector('.game-over').style.display = 'flex';
         document.querySelector('.game').style.opacity = '0.5';
         document.querySelector('#onceMore').addEventListener('click', () => {
-          // window.location.reload();
-          const winnerName = document.querySelector('input').value;
-          const winnerTime = timer.textContent;
-          const winnerDiff = userDiff;
-          // console.log(winnerName, winnerTime, winnerDiff, gameSize);
-          const winner = new UserResult(winnerDiff, gameSize, winnerName, winnerTime);
-          console.log(winner);
+          window.location.reload();
+          // const winnerName = document.querySelector('input').value;
+          // const winnerTime = timer.textContent;
+          // const winnerDiff = userDiff;
+          // // console.log(winnerName, winnerTime, winnerDiff, gameSize);
+          // const winner = new UserResult(winnerDiff, gameSize, winnerName, winnerTime);
+          // console.log(winner);
         });
       }
       //opening empty cells
@@ -197,6 +197,7 @@ const start = () => {
       clearInterval(timerInit);
       document.querySelector('.victory').style.display = 'flex';
       document.querySelector('.game').style.opacity = '0.5';
+      document.querySelector('#fireworks-canvas').style.display = 'flex';
       document.querySelector('#submitResult').addEventListener('click', () => {
         const winnerName = document.querySelector('input').value;
         const winnerTime = timer.textContent;

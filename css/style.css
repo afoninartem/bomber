@@ -212,3 +212,9 @@ body {
 .container .victory form label, .container .victory form input, .container .victory form button {
   padding: 10px;
 }
+
+.container #fireworks-canvas {
+  height: 100%;
+  width: 100%;
+  display: none;
+}
