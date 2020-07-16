@@ -20,7 +20,7 @@ const start = () => {
   }
 
   const cells = document.querySelectorAll('.game__cell');
-  
+
   //difficulty
   const difficulty = {
     easy: 8,
@@ -163,7 +163,13 @@ const start = () => {
         document.querySelector('.game-over').style.display = 'flex';
         document.querySelector('.game').style.opacity = '0.5';
         document.querySelector('#onceMore').addEventListener('click', () => {
-          window.location.reload();
+          // window.location.reload();
+          const winnerName = document.querySelector('input').value;
+          const winnerTime = timer.textContent;
+          const winnerDiff = userDiff;
+          // console.log(winnerName, winnerTime, winnerDiff, gameSize);
+          const winner = new UserResult(winnerDiff, gameSize, winnerName, winnerTime);
+          console.log(winner);
         });
       }
       //opening empty cells
@@ -173,60 +179,47 @@ const start = () => {
     });
   });
 
+  //result object constructor
+  function UserResult(userDiff, userSize, userName, userTime) {
+    this.userDiff = userDiff;
+    this.userSize = userSize;
+    this.userName = userName;
+    this.userTime = userTime;
+  }
+
   //victory
+  const victory = () => {
+    const bombCells = document.querySelectorAll('.bomb');
+    const safeCells = Array.from(cells).filter(el => !el.classList.contains('bomb'));
+    let term1 = Array.from(bombCells).every(el => el.classList.contains('flag'));
+    let term2 = Array.from(safeCells).every(el => el.classList.contains('opened'));
+    if (term1 === true && term2 === true) {
+      clearInterval(timerInit);
+      document.querySelector('.victory').style.display = 'flex';
+      document.querySelector('.game').style.opacity = '0.5';
+      document.querySelector('#submitResult').addEventListener('click', () => {
+        const winnerName = document.querySelector('input').value;
+        const winnerTime = timer.textContent;
+        const winnerDiff = userDiff;
+        console.log(winnerName, winnerTime, winnerDiff, gameSize);
+        const userResult = {
+          winnerDiff: {
+            gameSize: {
+              winnerName: {
+                winnerTime
+              }
+            }
+          }
+        };
+        // console.log(JSON.stringify(userResult));
+      })
+      
+    }
+  }
   cells.forEach(cell => {
-    cell.addEventListener('click', function () {
-      const bombCells = document.querySelectorAll('.bomb');
-      const safeCells = Array.from(cells).filter(el => !el.classList.contains('bomb'));
-      let term1 = Array.from(bombCells).every(el => el.classList.contains('flag'));
-      let term2 = Array.from(safeCells).every(el => el.classList.contains('opened'));
-      if (term1 === true && term2 === true) {
-        clearInterval(timerInit);
-        document.querySelector('.victory').style.display = 'flex';
-        document.querySelector('.game').style.opacity = '0.5';
-        document.querySelector('#submitResult').addEventListener('click', () => {
-          const winnerName = document.querySelector('input').value;
-          const winnerTime = timer.textContent;
-          const winnerDiff = userDiff;
-          console.log(winnerName, winnerTime, winnerDiff);
-        })
-      }
-    });
+    cell.addEventListener('click', victory);
+    cell.addEventListener('contextmenu', victory);
   });
 
 
-
 }
-//first tryouts
-
-//index of element 
-// const getIndex = (x) => {
-//   let index = 0;
-//   temp = x;
-//   while (temp !== x.parentElement.firstElementChild) {
-//     temp = temp.previousSibling;
-//     index += 1;
-//   }
-//   return index;
-// }
-
-//tips generation
- //in the loop:
-  // let index = getIndex(cell);
-  // if (!cell.classList.contains('bomb')) {
-  //   let tip = 0;
-  //   if (cell.previousSibling !== null && cell.previousSibling.classList.contains('bomb')) tip++;
-  //   if (cell.nextSibling !== null && cell.nextSibling.classList.contains('bomb')) tip++
-  //   if (cell.parentElement !== game.firstElementChild) {
-  //     if (cell.parentElement.previousSibling.children[index] !== undefined && cell.parentElement.previousSibling.children[index].classList.contains('bomb')) tip++;
-  //     if (cell.parentElement.previousSibling.children[index - 1] !== undefined && cell.parentElement.previousSibling.children[index - 1].classList.contains('bomb')) tip++;
-  //     if (cell.parentElement.previousSibling.children[index + 1] !== undefined && cell.parentElement.previousSibling.children[index + 1].classList.contains('bomb')) tip++;
-  //   }
-  //   if (cell.parentElement !== game.lastElementChild) {
-  //     if (cell.parentElement.nextSibling.children[index] !== undefined && cell.parentElement.nextSibling.children[index].classList.contains('bomb')) tip++;
-  //     if (cell.parentElement.nextSibling.children[index - 1] !== undefined && cell.parentElement.nextSibling.children[index - 1].classList.contains('bomb')) tip++;
-  //     if (cell.parentElement.nextSibling.children[index + 1] !== undefined && cell.parentElement.nextSibling.children[index + 1].classList.contains('bomb')) tip++;
-  //   }
-  //   if (tip > 0) cell.textContent = tip;
-  //   else cell.classList.add('empty');
-  // }
