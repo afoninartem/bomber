@@ -118,7 +118,7 @@ body {
   background: #c5c4c4;
   border: 1px solid #000;
   text-align: center;
-  font-family: "Merriweather Sans", sans-serif;
+  font-family: "Orbitron", sans-serif;
   color: transparent;
 }
 
@@ -211,6 +211,20 @@ body {
 
 .container .victory form label, .container .victory form input, .container .victory form button {
   padding: 10px;
+}
+
+.container .rating {
+  position: relative;
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.container .rating__list li {
+  margin-bottom: 20px;
+  text-align: justify;
 }
 
 .container #fireworks-canvas {

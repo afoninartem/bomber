@@ -1,11 +1,20 @@
+//check user settings
 const settings = JSON.parse(localStorage.getItem('settings'));
-// console.log(settings)
 if (settings !== null) {
   const recentSize = settings.size;
   const recentDiff = settings.diff;
   document.querySelector(`option[value="${recentSize}"]`).setAttribute('selected', '')
   document.querySelector(`option[value="${recentDiff}"]`).setAttribute('selected', '')
 }
+
+//set rating system in localStorage
+const easy = JSON.parse(localStorage.getItem('easy'));
+if (easy === null) localStorage.setItem('easy', JSON.stringify([]));
+const normal = JSON.parse(localStorage.getItem('normal'));
+if (normal === null) localStorage.setItem('normal', JSON.stringify([]));
+const hard = JSON.parse(localStorage.getItem('hard'));
+if (hard === null) localStorage.setItem('hard', JSON.stringify([]));
+
 //game field generation
 const start = () => {
   const gameSize = document.querySelector('#areaSize').value;
@@ -177,7 +186,6 @@ const start = () => {
         document.querySelector('.game').style.opacity = '0.5';
         document.querySelector('#onceMore').addEventListener('click', () => {
           window.location.reload();
-          //add results to storage
         });
       }
       //opening empty cells
@@ -199,21 +207,48 @@ const start = () => {
       document.querySelector('.game').style.opacity = '0.5';
       document.querySelector('#fireworks-canvas').style.display = 'flex';
       document.querySelector('#submitResult').addEventListener('click', () => {
-        const winnerName = document.querySelector('input').value;
-        if (winnerName.length === 0) winnerName = 'Anon';
-        const winnerTime = timer.textContent;
-        console.log(winnerName, winnerTime, gameSize, time);
-        const arr = [userDiff, gameSize, winnerName, winnerTime];
-        console.log(arr)
-        const localResults = {};
-        arr.forEach(el => {
-          let a = localResults[el];
-          if (localResults[el] === undefined) {
-            localResults[el] = el;
-          }
-        });
-        localStorage.setItem(userDiff, JSON.stringify(localResults))
-        console.log(winnerName, winnerTime, gameSize, time);
+        let winnerName;
+        document.querySelector('input').value.length > 0 ? winnerName = document.querySelector('input').value : winnerName = 'Anon';
+        const thisDate = new Date();
+        let month = thisDate.getMonth() + 1;
+        if (month < 10) month = '0' + month;
+        let sec = thisDate.getSeconds();
+        if (sec < 10) sec = '0' + sec;
+        let min = thisDate.getMinutes();
+        if (min < 10) min = '0' + min;
+        let hour = thisDate.getHours();
+        if (hour < 10) hour = '0' + hour;
+        let day = thisDate.getDate();
+        if (day < 10) day = '0' + day;
+        const timeAndDate = `${hour}:${min}:${sec} ${day}.${month}.${thisDate.getFullYear()}`;
+        const currentResults = [gameSize, winnerName, time, timer.textContent, timeAndDate];
+        const results = JSON.parse(localStorage.getItem(`${userDiff}`));
+        if (!results.some(el => el[1] === currentResults[1])) {
+          results.push(currentResults);
+        } else {
+          results.forEach((el, i) => {
+            if (el[1] === currentResults[1]) {
+              if (el[0] === currentResults[0]) {
+                if (el[2] > currentResults[2]) {
+                  results.splice(i, 1, currentResults);
+                }
+              }
+            }
+          });
+        }
+        localStorage.setItem(`${userDiff}`, JSON.stringify(results));
+        const sameArea = results.filter(el => el[0] === gameSize);
+        sameArea.sort((a, b) => a[2] - b[2]);
+        const rating = document.querySelector('.rating__list');
+        for (let i = 0; i < 10; i += 1) {
+          const item = sameArea[i];
+          const li = document.createElement('li');
+          li.classList.add('rating__list__item');
+          li.textContent = `${item[4]} ${item[1]} ${item[3]}`;
+          rating.appendChild(li);
+        }
+        document.querySelector('.victory').style.display = 'none';
+        document.querySelector('.rating').style.display = 'flex';
       })
     }
   }

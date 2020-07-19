@@ -71,7 +71,7 @@ body {
         border: 1px solid #000;
         // font-size: 1em;
         text-align: center;
-        font-family: "Merriweather Sans", sans-serif;
+        font-family: "Orbitron", sans-serif;
         color: transparent;
       }
       .flag {
@@ -132,6 +132,17 @@ body {
       padding: 20px;
       label, input, button {
         padding: 10px;
+      }
+    }
+  }
+  .rating {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    &__list {
+      li {
+        margin-bottom: 20px;
+        text-align: justify;
       }
     }
   }
