@@ -38,6 +38,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 56px;
     .area-size {
       display: flex;
       align-items: center;
@@ -46,7 +47,8 @@ body {
         margin-right: 20px;
       }
       #areaSize {
-        width: 81px;
+        width: 225px;
+        border: none;
       }
     }
     .difficulty {
@@ -55,6 +57,10 @@ body {
       margin-bottom: 30px;
       &__title {
         margin-right: 20px;
+      }
+      #difficultySelect {
+        width: 225px;
+        border: none;
       }
     }
   }
@@ -123,7 +129,7 @@ body {
       text-align: center;
       padding: 20px;
     }
-    form {
+    .victory__input {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -140,9 +146,20 @@ body {
     display: none;
     flex-direction: column;
     &__list {
+      font-size: 36px;
       li {
+        width: 1200px;
+        display: flex;
+        justify-content: space-between;
         margin-bottom: 20px;
-        text-align: justify;
+        font-family: "Roboto", sans-serif;
+        div {
+          width: 33%;
+          span {
+            color: red;
+            font-size: 42px;
+          }
+        }
       }
     }
   }

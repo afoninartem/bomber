@@ -63,6 +63,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  font-size: 56px;
 }
 
 .wrapper .settings .area-size {
@@ -80,7 +81,8 @@ body {
 }
 
 .wrapper .settings .area-size #areaSize {
-  width: 81px;
+  width: 225px;
+  border: none;
 }
 
 .wrapper .settings .difficulty {
@@ -95,6 +97,11 @@ body {
 
 .wrapper .settings .difficulty__title {
   margin-right: 20px;
+}
+
+.wrapper .settings .difficulty #difficultySelect {
+  width: 225px;
+  border: none;
 }
 
 .wrapper .game {
@@ -193,7 +200,7 @@ body {
   padding: 20px;
 }
 
-.container .victory form {
+.container .victory .victory__input {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -209,7 +216,7 @@ body {
   padding: 20px;
 }
 
-.container .victory form label, .container .victory form input, .container .victory form button {
+.container .victory .victory__input label, .container .victory .victory__input input, .container .victory .victory__input button {
   padding: 10px;
 }
 
@@ -222,9 +229,29 @@ body {
           flex-direction: column;
 }
 
+.container .rating__list {
+  font-size: 36px;
+}
+
 .container .rating__list li {
+  width: 1200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   margin-bottom: 20px;
-  text-align: justify;
+  font-family: "Roboto", sans-serif;
+}
+
+.container .rating__list li div {
+  width: 33%;
+}
+
+.container .rating__list li div span {
+  color: red;
+  font-size: 42px;
 }
 
 .container #fireworks-canvas {

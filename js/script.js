@@ -184,7 +184,7 @@ const start = () => {
         clearInterval(timerInit);
         document.querySelector('.game-over').style.display = 'flex';
         document.querySelector('.game').style.opacity = '0.5';
-        document.querySelector('#onceMore').addEventListener('click', () => {
+        document.querySelector('#onceMore_1').addEventListener('click', () => {
           window.location.reload();
         });
       }
@@ -195,34 +195,44 @@ const start = () => {
     });
   });
 
-  //victory
-  const victory = () => {
-    const bombCells = document.querySelectorAll('.bomb');
-    const safeCells = Array.from(cells).filter(el => !el.classList.contains('bomb'));
-    let term1 = Array.from(bombCells).every(el => el.classList.contains('flag'));
-    let term2 = Array.from(safeCells).every(el => el.classList.contains('opened'));
-    if (term1 === true && term2 === true) {
-      clearInterval(timerInit);
-      document.querySelector('.victory').style.display = 'flex';
-      document.querySelector('.game').style.opacity = '0.5';
-      document.querySelector('#fireworks-canvas').style.display = 'flex';
-      document.querySelector('#submitResult').addEventListener('click', () => {
-        let winnerName;
-        document.querySelector('input').value.length > 0 ? winnerName = document.querySelector('input').value : winnerName = 'Anon';
-        const thisDate = new Date();
-        let month = thisDate.getMonth() + 1;
-        if (month < 10) month = '0' + month;
-        let sec = thisDate.getSeconds();
-        if (sec < 10) sec = '0' + sec;
-        let min = thisDate.getMinutes();
-        if (min < 10) min = '0' + min;
-        let hour = thisDate.getHours();
-        if (hour < 10) hour = '0' + hour;
-        let day = thisDate.getDate();
-        if (day < 10) day = '0' + day;
-        const timeAndDate = `${hour}:${min}:${sec} ${day}.${month}.${thisDate.getFullYear()}`;
-        const currentResults = [gameSize, winnerName, time, timer.textContent, timeAndDate];
-        const results = JSON.parse(localStorage.getItem(`${userDiff}`));
+  const setDate = () => {
+    const thisDate = new Date();
+    let month = thisDate.getMonth() + 1;
+    if (month < 10) month = '0' + month;
+    let sec = thisDate.getSeconds();
+    if (sec < 10) sec = '0' + sec;
+    let min = thisDate.getMinutes();
+    if (min < 10) min = '0' + min;
+    let hour = thisDate.getHours();
+    if (hour < 10) hour = '0' + hour;
+    let day = thisDate.getDate();
+    if (day < 10) day = '0' + day;
+    const timeAndDate = `${hour}:${min}:${sec} ${day}.${month}.${thisDate.getFullYear()}`;
+    return timeAndDate;
+  }
+
+  //rating output
+  const ratingOutput = (results) => {
+    const sameArea = results.filter(el => el[0] === gameSize);
+    sameArea.sort((a, b) => a[2] - b[2]);
+    const rating = document.querySelector('.rating__list');
+    for (let i = 0; i < sameArea.length; i += 1) {
+      const item = sameArea[i];
+      const li = document.createElement('li');
+      li.classList.add('rating__list__item');
+      rating.appendChild(li);
+      li.innerHTML = `<div><span>${item[1]}</span></div> <div>${item[3]}</div> <div>${item[4]}</div>`;
+    }
+    document.querySelector('#onceMore_2').addEventListener('click', () => {
+      window.location.reload();
+    });
+    document.querySelector('.victory').style.display = 'none';
+    document.querySelector('.rating').style.display = 'flex';
+  }
+
+  //results in localStorage
+  const saveResults = (currentResults) => {
+    const results = JSON.parse(localStorage.getItem(`${userDiff}`));
         if (!results.some(el => el[1] === currentResults[1])) {
           results.push(currentResults);
         } else {
@@ -232,23 +242,32 @@ const start = () => {
                 if (el[2] > currentResults[2]) {
                   results.splice(i, 1, currentResults);
                 }
+              } else {
+                results.push(currentResults);
               }
             }
           });
         }
-        localStorage.setItem(`${userDiff}`, JSON.stringify(results));
-        const sameArea = results.filter(el => el[0] === gameSize);
-        sameArea.sort((a, b) => a[2] - b[2]);
-        const rating = document.querySelector('.rating__list');
-        for (let i = 0; i < 10; i += 1) {
-          const item = sameArea[i];
-          const li = document.createElement('li');
-          li.classList.add('rating__list__item');
-          li.textContent = `${item[4]} ${item[1]} ${item[3]}`;
-          rating.appendChild(li);
-        }
-        document.querySelector('.victory').style.display = 'none';
-        document.querySelector('.rating').style.display = 'flex';
+        ratingOutput(results);
+        return localStorage.setItem(`${userDiff}`, JSON.stringify(results));
+  }
+  //victory
+  const victory = () => {
+    const bombCells = document.querySelectorAll('.bomb');
+    const safeCells = Array.from(cells).filter(el => !el.classList.contains('bomb'));
+    let term1 = Array.from(bombCells).every(el => el.classList.contains('flag'));
+    let term2 = Array.from(safeCells).every(el => el.classList.contains('opened'));
+    if (term1 === true && term2 === true) {
+      clearInterval(timerInit);
+      document.querySelector('.victory').style.display = 'flex';
+      document.querySelector('.game').style.opacity = '0.2';
+      document.querySelector('#fireworks-canvas').style.display = 'flex';
+      document.querySelector('#submitResult').addEventListener('click', () => {
+        let winnerName;
+        document.querySelector('input').value.length > 0 ? winnerName = document.querySelector('input').value : winnerName = 'Anon';
+        timeAndDate = setDate();
+        const currentResults = [gameSize, winnerName, time, timer.textContent, timeAndDate];
+        saveResults(currentResults);
       })
     }
   }
